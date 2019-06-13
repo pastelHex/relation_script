@@ -34,12 +34,15 @@ terminal        Integer         NUMBER;
 
 /* non terminals */
 non terminal    Integer         expr;
-non terminal                    rel_def,statment_def,statment;
+non terminal                    rel_def,statment_def,statment,program;
+
+start with program;
 
 /* unary operators */
 
 /* grammar */
 
+program         ::= rel_def | statment | expr;
 rel_def         ::= VAR:v1 REL:r VAR:v2 L_BRA statment_def R_BRA    {: System.out.println("znaleziono def relacji\n"); :}
                 ;
 statment_def    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
