@@ -1,0 +1,54 @@
+import java_cup.runtime.*;
+import java.io.InputStreamReader;
+import javafx.util.Pair;
+import java.util.HashMap;
+import java.util.List;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+parser code {:
+    private HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
+    private HashMap<String, Pair<List<String>,String>> ref_def_;      //nazwa relacji -> <Lista zmiennych, jej ciało>
+
+    protected TestLexer lexer;
+
+    public static void main(String args[]) throws Exception {
+        ComplexSymbolFactory f = new ComplexSymbolFactory();
+        new parser(new TestLexer(new InputStreamReader(System.in)),f).parse();
+        }
+:}
+
+init with {:
+    variables_ = new HashMap<String, Integer>();
+    ref_def_ = new HashMap<String, Pair<List<String>,String>>();
+    lexer = new TestLexer(new InputStreamReader(System.in));
+:}
+
+scan with {: return lexer.next_token(); :}
+
+/* terminals */
+terminal                        GT,LT,L_BRA,R_BRA,IS;
+terminal        String          REL;
+terminal        String          VAR;
+terminal        Integer         NUMBER;
+
+/* non terminals */
+non terminal    Integer         expr;
+non terminal                    rel_def,statment_def,statment;
+
+/* unary operators */
+
+/* grammar */
+
+rel_def         ::= VAR:v1 REL:r VAR:v2 L_BRA statment_def R_BRA    {: System.out.println("znaleziono def relacji\n"); :}
+                ;
+statment_def    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+                |   VAR:v1 LT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+                |   VAR:v1                                          {: System.out.println("ciało relacji\n"); :}
+                ;
+statment        ::= VAR:v1 IS expr:e1                               {: System.out.println("Statement\n"); :}
+                ;
+expr            ::= NUMBER:n1 REL:r NUMBER:n2                       {: System.out.println("expr\n"); :}
+                ;
+
+
