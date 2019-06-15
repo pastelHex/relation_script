@@ -5,7 +5,6 @@
 
 import java_cup.runtime.*;
 import java.io.InputStreamReader;
-import javafx.util.Pair;
 import java.util.HashMap;
 import java.util.List;
 import java.io.IOException;
@@ -107,7 +106,7 @@ public class parser extends java_cup.runtime.lr_parser {
     {
 
     variables_ = new HashMap<String, Integer>();
-    ref_def_ = new HashMap<String, Pair<List<String>,String>>();
+    //ref_def_ = new HashMap<String, Pair<List<String>,String>>();
     set_def_ = new HashMap<String, Set<Integer>>();
     lexer = new TestLexer(symbolFactory,new InputStreamReader(System.in));
 
@@ -122,7 +121,7 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
     private HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
-    private HashMap<String, Pair<List<String>,String>> ref_def_;      //nazwa relacji -> <Lista zmiennych, jej ciało>
+    //private HashMap<String, Pair<List<String>,String>> ref_def_;      //nazwa relacji -> <Lista zmiennych, jej ciało>
     private HashMap<String, Set<Integer>> set_def_;
 
     protected static TestLexer lexer;
