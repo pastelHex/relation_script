@@ -5,6 +5,9 @@
  * Used for package and import statements. (we don't need any here)
  */
 import java_cup.runtime.Symbol;
+import java_cup.runtime.ComplexSymbolFactory;
+import java_cup.runtime.ComplexSymbolFactory.Location;
+import java.lang.*;
 
 
 /**
@@ -12,7 +15,7 @@ import java_cup.runtime.Symbol;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>src/jflex/test.flex</tt>
  */
-class TestLexer implements java_cup.runtime.Scanner {
+public class TestLexer implements java_cup.runtime.Scanner {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -39,8 +42,9 @@ class TestLexer implements java_cup.runtime.Scanner {
    */
   private static final String ZZ_CMAP_PACKED = 
     "\11\0\1\13\1\12\1\0\1\13\1\11\22\0\1\13\11\0\1\3"+
-    "\5\0\1\2\11\14\2\0\1\10\1\0\1\7\2\0\32\4\6\0"+
-    "\10\1\1\15\11\1\1\16\7\1\1\5\1\0\1\6\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
+    "\1\15\1\16\1\15\2\0\1\2\11\14\1\0\1\17\1\10\1\0"+
+    "\1\7\2\0\32\4\1\0\1\15\4\0\10\1\1\20\11\1\1\21"+
+    "\7\1\1\5\1\0\1\6\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
 
   /** 
    * Translates characters to character classes
@@ -54,10 +58,11 @@ class TestLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\2\0\1\1\1\2\1\1\1\3\1\4\1\5\1\6"+
-    "\2\7\1\10\2\2\1\0\1\11\1\12";
+    "\1\7\2\10\1\11\1\12\1\13\1\14\1\2\1\0"+
+    "\1\15\1\16";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[17];
+    int [] result = new int[20];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -82,12 +87,12 @@ class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\17\0\36\0\55\0\74\0\36\0\36\0\36"+
-    "\0\36\0\113\0\36\0\132\0\151\0\170\0\207\0\55"+
-    "\0\36";
+    "\0\0\0\22\0\44\0\66\0\110\0\132\0\44\0\44"+
+    "\0\44\0\44\0\154\0\44\0\176\0\44\0\44\0\44"+
+    "\0\220\0\242\0\66\0\44";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[17];
+    int [] result = new int[20];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -110,15 +115,16 @@ class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\3\1\4\1\3\1\5\1\3\1\6\1\7\1\10"+
-    "\1\11\1\12\2\13\1\14\1\15\1\4\17\3\20\0"+
-    "\1\4\1\16\11\0\1\16\2\4\4\0\1\17\24\0"+
-    "\1\13\6\0\1\14\11\0\1\14\3\0\1\4\1\16"+
-    "\11\0\1\16\1\4\1\20\2\0\1\16\11\0\1\16"+
-    "\5\0\1\21\1\17\12\0";
+    "\1\3\1\4\1\3\1\5\1\6\1\7\1\10\1\11"+
+    "\1\12\1\13\2\14\1\15\1\16\1\17\1\20\1\21"+
+    "\1\4\22\3\23\0\2\4\11\0\1\4\3\0\2\4"+
+    "\4\0\1\22\17\0\1\6\1\0\1\6\7\0\1\6"+
+    "\17\0\1\14\11\0\1\15\11\0\1\15\6\0\2\4"+
+    "\11\0\1\4\3\0\1\4\1\23\3\0\1\24\1\22"+
+    "\15\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[150];
+    int [] result = new int[180];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -156,11 +162,11 @@ class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\2\1\4\11\1\1\1\11\3\1\1\0"+
-    "\1\1\1\11";
+    "\2\0\1\11\3\1\4\11\1\1\1\11\1\1\3\11"+
+    "\1\1\1\0\1\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[17];
+    int [] result = new int[20];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -236,6 +242,40 @@ class TestLexer implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
+   /* public TestLexer(ComplexSymbolFactory sf, java.io.InputStream is){
+		this(is);
+        symbolFactory = sf;
+    }*/
+	public TestLexer(ComplexSymbolFactory sf, java.io.Reader reader){
+		this(reader);
+        symbolFactory = sf;
+    }
+
+    private StringBuffer sb;
+    private ComplexSymbolFactory symbolFactory;
+    private int csline,cscolumn;
+
+    public Symbol symbol(String name, int code){
+		return symbolFactory.newSymbol(name, code,
+						new Location(yyline+1,yycolumn+1, yychar), // -yylength()
+						new Location(yyline+1,yycolumn+yylength(), yychar+yylength())
+				);
+    }
+    public Symbol symbol(String name, int code, String lexem){
+	return symbolFactory.newSymbol(name, code,
+						new Location(yyline+1, yycolumn +1, yychar),
+						new Location(yyline+1,yycolumn+yylength(), yychar+yylength()), lexem);
+    }
+
+    protected void emit_warning(String message){
+    	System.out.println("scanner warning: " + message + " at : 2 "+
+    			(yyline+1) + " " + (yycolumn+1) + " " + yychar);
+    }
+
+    protected void emit_error(String message){
+    	System.out.println("scanner error: " + message + " at : 2" +
+    			(yyline+1) + " " + (yycolumn+1) + " " + yychar);
+    }
 
 
   /**
@@ -243,7 +283,7 @@ class TestLexer implements java_cup.runtime.Scanner {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  TestLexer(java.io.Reader in) {
+  public TestLexer(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -258,7 +298,7 @@ class TestLexer implements java_cup.runtime.Scanner {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 90) {
+    while (i < 102) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -498,6 +538,64 @@ class TestLexer implements java_cup.runtime.Scanner {
     while (true) {
       zzMarkedPosL = zzMarkedPos;
 
+      yychar+= zzMarkedPosL-zzStartRead;
+
+      boolean zzR = false;
+      int zzCh;
+      int zzCharCount;
+      for (zzCurrentPosL = zzStartRead  ;
+           zzCurrentPosL < zzMarkedPosL ;
+           zzCurrentPosL += zzCharCount ) {
+        zzCh = Character.codePointAt(zzBufferL, zzCurrentPosL, zzMarkedPosL);
+        zzCharCount = Character.charCount(zzCh);
+        switch (zzCh) {
+        case '\u000B':  // fall through
+        case '\u000C':  // fall through
+        case '\u0085':  // fall through
+        case '\u2028':  // fall through
+        case '\u2029':
+          yyline++;
+          yycolumn = 0;
+          zzR = false;
+          break;
+        case '\r':
+          yyline++;
+          yycolumn = 0;
+          zzR = true;
+          break;
+        case '\n':
+          if (zzR)
+            zzR = false;
+          else {
+            yyline++;
+            yycolumn = 0;
+          }
+          break;
+        default:
+          zzR = false;
+          yycolumn += zzCharCount;
+        }
+      }
+
+      if (zzR) {
+        // peek one character ahead if it is \n (if we have counted one line too much)
+        boolean zzPeek;
+        if (zzMarkedPosL < zzEndReadL)
+          zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+        else if (zzAtEOF)
+          zzPeek = false;
+        else {
+          boolean eof = zzRefill();
+          zzEndReadL = zzEndRead;
+          zzMarkedPosL = zzMarkedPos;
+          zzBufferL = zzBuffer;
+          if (eof) 
+            zzPeek = false;
+          else 
+            zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+        }
+        if (zzPeek) yyline--;
+      }
       zzAction = -1;
 
       zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
@@ -566,55 +664,75 @@ class TestLexer implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { throw new RuntimeException("Illegal character <" + yytext() + ">");
-            } 
-            // fall through
-          case 11: break;
-          case 2: 
-            { System.out.println("VARIABLE "+ yytext()); return new Symbol(sym.VAR, yytext());
-            } 
-            // fall through
-          case 12: break;
-          case 3: 
-            { return new Symbol(sym.L_BRA);
-            } 
-            // fall through
-          case 13: break;
-          case 4: 
-            { return new Symbol(sym.R_BRA);
-            } 
-            // fall through
-          case 14: break;
-          case 5: 
-            { return new Symbol(sym.GT);
+            { emit_warning("Unrecognized character '" +yytext()+"' -- ignored");
             } 
             // fall through
           case 15: break;
-          case 6: 
-            { return new Symbol(sym.LT);
+          case 2: 
+            { System.out.println("VARIABLE "+ yytext()); return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
             } 
             // fall through
           case 16: break;
-          case 7: 
-            { /*ignore*/
+          case 3: 
+            { return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, yytext());
             } 
             // fall through
           case 17: break;
-          case 8: 
-            { return new Symbol(sym.NUMBER, Integer.parseInt(yytext()));
+          case 4: 
+            { return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);
             } 
             // fall through
           case 18: break;
-          case 9: 
-            { System.out.println("IS"); return new Symbol(sym.IS);
+          case 5: 
+            { return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);
             } 
             // fall through
           case 19: break;
-          case 10: 
-            { System.out.println("RELATION "+ yytext()); return new Symbol(sym.REL, yytext());
+          case 6: 
+            { return symbolFactory.newSymbol("GT",sym.GT);
             } 
             // fall through
           case 20: break;
+          case 7: 
+            { return symbolFactory.newSymbol("LT",sym.LT);
+            } 
+            // fall through
+          case 21: break;
+          case 8: 
+            { /*ignore*/
+            } 
+            // fall through
+          case 22: break;
+          case 9: 
+            { return symbolFactory.newSymbol("NUMBER",sym.NUMBER, Integer.parseInt(yytext()));
+            } 
+            // fall through
+          case 23: break;
+          case 10: 
+            { return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());
+            } 
+            // fall through
+          case 24: break;
+          case 11: 
+            { return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);
+            } 
+            // fall through
+          case 25: break;
+          case 12: 
+            { return symbolFactory.newSymbol("SEMI",sym.SEMI);
+            } 
+            // fall through
+          case 26: break;
+          case 13: 
+            { System.out.println("IS"); return symbolFactory.newSymbol("IS",sym.IS);
+            } 
+            // fall through
+          case 27: break;
+          case 14: 
+            { System.out.println("RELATION "+ yytext()); return symbolFactory.newSymbol("RELATION",sym.REL, yytext());
+            } 
+            // fall through
+          case 28: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

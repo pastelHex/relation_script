@@ -7,13 +7,18 @@
 public class sym {
   /* terminals */
   public static final int R_BRA = 5;
-  public static final int NUMBER = 9;
+  public static final int NUMBER = 12;
+  public static final int SET = 11;
+  public static final int SEMI = 9;
   public static final int EOF = 0;
-  public static final int VAR = 8;
-  public static final int REL = 7;
+  public static final int VAR = 13;
+  public static final int REL = 10;
+  public static final int SET_OPERATORS = 8;
   public static final int L_BRA = 4;
+  public static final int SET_VAR = 14;
   public static final int GT = 2;
   public static final int error = 1;
+  public static final int SET_DELI = 7;
   public static final int LT = 3;
   public static final int IS = 6;
   public static final String[] terminalNames = new String[] {
@@ -24,9 +29,14 @@ public class sym {
   "L_BRA",
   "R_BRA",
   "IS",
+  "SET_DELI",
+  "SET_OPERATORS",
+  "SEMI",
   "REL",
+  "SET",
+  "NUMBER",
   "VAR",
-  "NUMBER"
+  "SET_VAR"
   };
 }
 
