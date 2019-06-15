@@ -669,7 +669,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
             // fall through
           case 15: break;
           case 2: 
-            { System.out.println("VARIABLE "+ yytext()); return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
+            { return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
             } 
             // fall through
           case 16: break;
@@ -719,17 +719,17 @@ public class TestLexer implements java_cup.runtime.Scanner {
             // fall through
           case 25: break;
           case 12: 
-            { System.out.println(";");return symbolFactory.newSymbol("SEMI",sym.SEMI);
+            { return symbolFactory.newSymbol("SEMI",sym.SEMI);
             } 
             // fall through
           case 26: break;
           case 13: 
-            { System.out.println("IS"); return symbolFactory.newSymbol("IS",sym.IS);
+            { return symbolFactory.newSymbol("IS",sym.IS);
             } 
             // fall through
           case 27: break;
           case 14: 
-            { System.out.println("RELATION "+ yytext()); return symbolFactory.newSymbol("RELATION",sym.REL, yytext());
+            { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());
             } 
             // fall through
           case 28: break;

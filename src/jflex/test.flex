@@ -90,9 +90,9 @@ SEMI            =   ";"
 
 %%
 
-<YYINITIAL> "is"                {System.out.println("IS"); return symbolFactory.newSymbol("IS",sym.IS);}
-<YYINITIAL> {VARIABLE}          {System.out.println("VARIABLE "+ yytext()); return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());}
-<YYINITIAL> {RELATION}          {System.out.println("RELATION "+ yytext()); return symbolFactory.newSymbol("RELATION",sym.REL, yytext());}
+<YYINITIAL> "is"                { return symbolFactory.newSymbol("IS",sym.IS);}
+<YYINITIAL> {VARIABLE}          { return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());}
+<YYINITIAL> {RELATION}          { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());}
 <YYINITIAL> {WHITESPACE}        {/*ignore*/}
 <YYINITIAL> {BRACKET_L}         {return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);}
 <YYINITIAL> {BRACKET_R}         {return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);}
@@ -102,7 +102,7 @@ SEMI            =   ";"
 <YYINITIAL> {SET_VAR}           {return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, yytext());}
 <YYINITIAL> {SET_OPERATORS}     {return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());}
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
-<YYINITIAL> {SEMI}              {System.out.println(";");return symbolFactory.newSymbol("SEMI",sym.SEMI);}
+<YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
 
 [^]                             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
 //[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }
