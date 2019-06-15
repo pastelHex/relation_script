@@ -2,11 +2,9 @@ import java_cup.runtime.*;
 import java.io.InputStreamReader;
 //import javafx.util.Pair;
 import java.util.HashMap;
-import java.util.List;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Set;
 import java.util.HashSet;
+import common.RelationRepository;
 
 parser code {:
     private HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
@@ -39,7 +37,7 @@ init with {:
 scan with {: return lexer.next_token(); :}
 
 /* terminals */
-terminal                        GT,LT,L_BRA,R_BRA,IS,SET_DELI,SEMI;
+terminal                        GT,LT,L_BRA,R_BRA,IS,SET_DELI,SEMI,REL_DEFINITION;
 terminal        String          SET_OPERATORS;
 terminal        String          REL;
 terminal        List<Integer>   SET;
@@ -48,7 +46,7 @@ terminal        String          VAR,SET_VAR;
 
 /* non terminals */
 non terminal    Integer         expr_var,expr_rel;
-non terminal                    rel_def,statment_def,statment,expr_list,set;
+non terminal                    rel_def,statment_def_node,statment,expr_list,set;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
 
@@ -64,6 +62,8 @@ expr_list       ::= expr_list statment SEMI
                   | expr_list expr_var:e SEMI
                   | statment SEMI
                   | expr_var:e SEMI
+                  | expr_list rel_def SEMI
+                  | rel_def SEMI
                   ;//rel_def |
 
 
@@ -95,20 +95,21 @@ expr_set        ::= SET_VAR:v                        {: //System.out.println(""+
 set             ::= L_BRA set_content R_BRA           //{: System.out.println("set"); :}
                 ;
 
-set_content     ::= NUMBER:n1 SET_DELI set_content   {: //System.out.println("set el "+n1);
-                                                        tmp_set_.add(n1);
+set_content     ::= NUMBER:n1 SET_DELI set_content   {: tmp_set_.add(n1);
                                                         RESULT = n1; :}
-                  | NUMBER:n1                        {: //System.out.println("set el "+n1);
-                                                        tmp_set_.add(n1);
+                  | NUMBER:n1                        {: tmp_set_.add(n1);
                                                         RESULT = n1; :}
                   ;
-//rel_def         ::= VAR:v1 REL:r VAR:v2 L_BRA statment_def R_BRA    {: System.out.println("znaleziono def relacji\n"); :}
-//                ;
+rel_def         ::= REL_DEFINITION VAR:v1 SET_VAR:r VAR:v2 L_BRA statment_def_node R_BRA
+                    {: System.out.println("znaleziono def relacji\n");
+                       //RelationRepository.addRelationName(r);
+                       :}
+                ;
 
-//statment_def    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
-//                |   VAR:v1 LT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
-//                |   VAR:v1                                          {: System.out.println("ciało relacji\n"); :}
-//                ;
+statment_def_node    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+                |   VAR:v1 LT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+                |   VAR:v1                                          {: System.out.println("ciało relacji\n"); :}
+                ;//DEF: a RRR b {a<b};
 
 
 //expr_rel        ::= NUMBER:n1 REL:r NUMBER:n2                       {: System.out.println("expr_rel\n"); :}

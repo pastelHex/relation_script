@@ -2,7 +2,7 @@
  * Text up to the first  is copied verbatim into the created source file.
  * Used for package and import statements. (we don't need any here)
  */
-import java_cup.runtime.Symbol;
+import common.RelationRepository;import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 import java.lang.*;
@@ -33,10 +33,7 @@ import java.lang.*;
 /* Code in the next section is copied into the generated lexer class.
  */
 %{
-   /* public TestLexer(ComplexSymbolFactory sf, java.io.InputStream is){
-		this(is);
-        symbolFactory = sf;
-    }*/
+
 	public TestLexer(ComplexSymbolFactory sf, java.io.Reader reader){
 		this(reader);
         symbolFactory = sf;
@@ -73,7 +70,7 @@ import java.lang.*;
  */
 
 VARIABLE        =   [a-z]+([a-z]|[0-9])*
-RELATION        =   "*"[A-Z]+"*"
+//RELATION        =   [A-Z]+([A-Z]|[0-9])*
 SET_VAR         =   [A-Z]+([A-Z]|[0-9])*
 BRACKET_L       =   "{"
 BRACKET_R       =   "}"
@@ -84,6 +81,7 @@ NUMBER          =   [1-9][0-9]*
 SET_OPERATORS   =   "+"|"-"|"\\"
 SET_DELI        =   ","
 SEMI            =   ";"
+DEF             =   "DEF:"
 //SET_LIST        =   (","{WHITESPACE}*{VARIABLE})+
 
 %state STRING
@@ -91,18 +89,24 @@ SEMI            =   ";"
 %%
 
 <YYINITIAL> "is"                { return symbolFactory.newSymbol("IS",sym.IS);}
-<YYINITIAL> {VARIABLE}          { return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());}
-<YYINITIAL> {RELATION}          { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());}
+<YYINITIAL> {VARIABLE}          {return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());}
+//<YYINITIAL> {RELATION}          { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());}
 <YYINITIAL> {WHITESPACE}        {/*ignore*/}
 <YYINITIAL> {BRACKET_L}         {return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);}
 <YYINITIAL> {BRACKET_R}         {return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);}
 <YYINITIAL> {GT}                {return symbolFactory.newSymbol("GT",sym.GT);}
 <YYINITIAL> {LT}                {return symbolFactory.newSymbol("LT",sym.LT);}
 <YYINITIAL> {NUMBER}            {return symbolFactory.newSymbol("NUMBER",sym.NUMBER, Integer.parseInt(yytext()));}
-<YYINITIAL> {SET_VAR}           {return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, yytext());}
+<YYINITIAL> {SET_VAR}           {String capsName = yytext();
+                                 if(RelationRepository.isThereRelation(capsName)){
+                                     return symbolFactory.newSymbol("SET_VAR",sym.REL, yytext());
+                                 }else{
+                                     return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, capsName);
+                                     }}
 <YYINITIAL> {SET_OPERATORS}     {return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());}
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
 <YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
+<YYINITIAL> {DEF}               {return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);}
 
 [^]                             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
 //[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }

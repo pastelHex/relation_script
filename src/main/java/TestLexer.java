@@ -4,7 +4,7 @@
  * Text up to the first  is copied verbatim into the created source file.
  * Used for package and import statements. (we don't need any here)
  */
-import java_cup.runtime.Symbol;
+import common.RelationRepository;import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 import java.lang.*;
@@ -41,10 +41,10 @@ public class TestLexer implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\13\1\12\1\0\1\13\1\11\22\0\1\13\11\0\1\3"+
-    "\1\15\1\16\1\15\2\0\1\2\11\14\1\0\1\17\1\10\1\0"+
-    "\1\7\2\0\32\4\1\0\1\15\4\0\10\1\1\20\11\1\1\21"+
-    "\7\1\1\5\1\0\1\6\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
+    "\11\0\1\12\1\11\1\0\1\12\1\10\22\0\1\12\12\0\1\14"+
+    "\1\15\1\14\2\0\1\2\11\13\1\22\1\16\1\7\1\0\1\6"+
+    "\2\0\3\3\1\17\1\20\1\21\24\3\1\0\1\14\4\0\10\1"+
+    "\1\23\11\1\1\24\7\1\1\4\1\0\1\5\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
 
   /** 
    * Translates characters to character classes
@@ -57,12 +57,12 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\1\1\3\1\4\1\5\1\6"+
-    "\1\7\2\10\1\11\1\12\1\13\1\14\1\2\1\0"+
-    "\1\15\1\16";
+    "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
+    "\2\10\1\11\1\12\1\13\1\14\1\3\1\2\1\3"+
+    "\1\15\1\3\1\16";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[20];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -87,12 +87,12 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\22\0\44\0\66\0\110\0\132\0\44\0\44"+
-    "\0\44\0\44\0\154\0\44\0\176\0\44\0\44\0\44"+
-    "\0\220\0\242\0\66\0\44";
+    "\0\0\0\25\0\52\0\77\0\124\0\52\0\52\0\52"+
+    "\0\52\0\151\0\52\0\176\0\52\0\52\0\52\0\223"+
+    "\0\250\0\275\0\77\0\322\0\52";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[20];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -116,15 +116,17 @@ public class TestLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\3\1\4\1\3\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\2\14\1\15\1\16\1\17\1\20\1\21"+
-    "\1\4\22\3\23\0\2\4\11\0\1\4\3\0\2\4"+
-    "\4\0\1\22\17\0\1\6\1\0\1\6\7\0\1\6"+
-    "\17\0\1\14\11\0\1\15\11\0\1\15\6\0\2\4"+
-    "\11\0\1\4\3\0\1\4\1\23\3\0\1\24\1\22"+
-    "\15\0";
+    "\1\12\2\13\1\14\1\15\1\16\1\17\1\20\2\5"+
+    "\1\3\1\21\1\4\25\3\26\0\2\4\10\0\1\4"+
+    "\7\0\2\4\2\0\2\5\7\0\1\5\3\0\3\5"+
+    "\14\0\1\13\15\0\1\14\10\0\1\14\13\0\2\5"+
+    "\7\0\1\5\3\0\1\5\1\22\1\5\4\0\2\4"+
+    "\10\0\1\4\7\0\1\4\1\23\2\0\2\5\7\0"+
+    "\1\5\3\0\2\5\1\24\5\0\2\5\7\0\1\5"+
+    "\3\0\3\5\1\25\2\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[180];
+    int [] result = new int[231];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -162,11 +164,11 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\3\1\4\11\1\1\1\11\1\1\3\11"+
-    "\1\1\1\0\1\1\1\11";
+    "\2\0\1\11\2\1\4\11\1\1\1\11\1\1\3\11"+
+    "\5\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[20];
+    int [] result = new int[21];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -242,10 +244,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-   /* public TestLexer(ComplexSymbolFactory sf, java.io.InputStream is){
-		this(is);
-        symbolFactory = sf;
-    }*/
+
 	public TestLexer(ComplexSymbolFactory sf, java.io.Reader reader){
 		this(reader);
         symbolFactory = sf;
@@ -298,7 +297,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 102) {
+    while (i < 108) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -669,12 +668,18 @@ public class TestLexer implements java_cup.runtime.Scanner {
             // fall through
           case 15: break;
           case 2: 
-            { return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
+            { System.out.println("VAR"); return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
             } 
             // fall through
           case 16: break;
           case 3: 
-            { return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, yytext());
+            { String capsName = yytext();
+                                    System.out.println("set VAR");
+                                 if(RelationRepository.isThereRelation(capsName)){
+                                     return symbolFactory.newSymbol("SET_VAR",sym.REL, yytext());
+                                 }else{
+                                     return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, capsName);
+                                     }
             } 
             // fall through
           case 17: break;
@@ -729,7 +734,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
             // fall through
           case 27: break;
           case 14: 
-            { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());
+            { System.out.println("DEF");return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);
             } 
             // fall through
           case 28: break;
