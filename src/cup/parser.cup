@@ -51,30 +51,30 @@ start with program;
 
 /* grammar */
 
-program         ::= rel_def | statment | expr_var;
-rel_def         ::= VAR:v1 REL:r VAR:v2 L_BRA statment_def R_BRA    {: System.out.println("znaleziono def relacji\n"); :}
+program         ::=  statment | expr_var;//rel_def |
+
+
+statment        ::= VAR:v1 IS expr_var:e1 SEMI       {: System.out.println("Statement\n"+v1+e1); variables_.put(v1,e1); :}
                 ;
 
-statment_def    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
-                |   VAR:v1 LT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
-                |   VAR:v1                                          {: System.out.println("ciało relacji\n"); :}
-                ;
 
-statment        ::= VAR:v1 IS expr_var:e1 SEMI                      {: System.out.println("Statement\n"+v1+e1); variables_.put(v1,e1); :}
+expr_var        ::= NUMBER:n1                        {: System.out.println("expr\n"+n1); RESULT = n1; :}
+                |   VAR:v1                           {: System.out.println("expr\n"+v1); RESULT = variables_.get(v1);:}
+                |   expr_rel:r                       {: System.out.println("expr\n"); :}
                 ;
+//rel_def         ::= VAR:v1 REL:r VAR:v2 L_BRA statment_def R_BRA    {: System.out.println("znaleziono def relacji\n"); :}
+//                ;
 
-expr_rel        ::= NUMBER:n1 REL:r NUMBER:n2                       {: System.out.println("expr_rel\n"); :}
-                ;
-
-expr_var        ::=     NUMBER:n1                                   {: System.out.println("expr\n"+n1); RESULT = n1; :}
-                |   VAR:v1                                          {: System.out.println("expr\n"+v1); RESULT = variables_.get(v1);:}
-                |       expr_rel:r                                  {: System.out.println("expr\n"); :}
-                ;
-
+//statment_def    ::= VAR:v1 GT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+//                |   VAR:v1 LT VAR:v2                                {: System.out.println("ciało relacji\n"); :}
+//                |   VAR:v1                                          {: System.out.println("ciało relacji\n"); :}
+//                ;
 //expr_set        ::= SET_VAR:s1 IS L_BRA set_content R_BRA           {: System.out.println("set\n"); :}
 //                ;
 //set_content     ::= NUMBER:n1 SET_DELI
 //                |   NUMBER:n1
 //                ;
 
+//expr_rel        ::= NUMBER:n1 REL:r NUMBER:n2                       {: System.out.println("expr_rel\n"); :}
+//                ;
 

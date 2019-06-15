@@ -719,7 +719,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
             // fall through
           case 25: break;
           case 12: 
-            { return symbolFactory.newSymbol("SEMI",sym.SEMI);
+            { System.out.println(";");return symbolFactory.newSymbol("SEMI",sym.SEMI);
             } 
             // fall through
           case 26: break;

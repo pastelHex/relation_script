@@ -102,7 +102,7 @@ SEMI            =   ";"
 <YYINITIAL> {SET_VAR}           {return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, yytext());}
 <YYINITIAL> {SET_OPERATORS}     {return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());}
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
-<YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
+<YYINITIAL> {SEMI}              {System.out.println(";");return symbolFactory.newSymbol("SEMI",sym.SEMI);}
 
 [^]                             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
 //[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }
