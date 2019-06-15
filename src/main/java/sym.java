@@ -9,11 +9,11 @@ public class sym {
   public static final int R_BRA = 5;
   public static final int NUMBER = 12;
   public static final int SET = 11;
-  public static final int SEMI = 9;
+  public static final int SEMI = 8;
   public static final int EOF = 0;
   public static final int VAR = 13;
   public static final int REL = 10;
-  public static final int SET_OPERATORS = 8;
+  public static final int SET_OPERATORS = 9;
   public static final int L_BRA = 4;
   public static final int SET_VAR = 14;
   public static final int GT = 2;
@@ -30,8 +30,8 @@ public class sym {
   "R_BRA",
   "IS",
   "SET_DELI",
-  "SET_OPERATORS",
   "SEMI",
+  "SET_OPERATORS",
   "REL",
   "SET",
   "NUMBER",
