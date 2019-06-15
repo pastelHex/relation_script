@@ -52,6 +52,8 @@ non terminal                    rel_def,statment_def,statment,expr_list,set;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
 
+precedence left SET_OPERATORS;
+
 start with expr_list;
 
 /* unary operators */
@@ -62,17 +64,16 @@ expr_list       ::= expr_list statment SEMI
                   | expr_list expr_var:e SEMI
                   | statment SEMI
                   | expr_var:e SEMI
-                //  | expr_list expr_set:e SEMI
-                 // | expr_set:e SEMI
                   ;//rel_def |
 
 
 statment        ::= VAR:v1 IS expr_var:e1            {: //System.out.println("Statement "+v1+"="+e1);
                                                         variables_.put(v1,e1); :}
-                  | SET_VAR:s1 IS expr_set             {: //System.out.println("statment set "+s1);
-                                                        set_def_.put(s1,new HashSet<Integer>(tmp_set_));
+                  | SET_VAR:s1 IS expr_set:e             {: //System.out.println("statment set "+s1);
+                                                        set_def_.put(s1,new HashSet<Integer>(e));
                                                         tmp_set_.clear(); :}
-                  | expr_set                         {:tmp_set_.clear(); :}
+                  | expr_set:e                         {:System.out.println(""+e);
+                                                        tmp_set_.clear(); :}
                     ;
 
 
@@ -81,18 +82,15 @@ expr_var        ::= NUMBER:n1                        {: System.out.println(""+n1
                                                         RESULT = variables_.get(v1); :}
 //                |   expr_rel:r                       {: System.out.println("expr\n"); :}
                 ;
-expr_set        ::= SET_VAR:v                        {: System.out.println(""+v+set_def_.get(v).toString());
-                                                        tmp_set_=set_def_.get(v);
-                                                        RESULT = v; :}
-                  | set                              {: System.out.println(""+tmp_set_.toString());
-                                                        //tmp_set_.clear();
+expr_set        ::= SET_VAR:v                        {: //System.out.println(""+v+set_def_.get(v).toString());
+                                                        //tmp_set_=set_def_.get(v);
+                                                        RESULT = set_def_.get(v); :}
+                  | set                              {: //System.out.println(""+tmp_set_.toString());
+                                                        RESULT = tmp_set_;
                                                          :}
-//                  | SET_VAR:v1 SET_OPERATORS:o SET_VAR:v2 {: //System.out.println(""+v1+o+v2);
-//                                                             tmp_set_ = LogicSet.setOperation(set_def_.get(v1),o,set_def_.get(v2));
-//                                                                :}
-//                  | expr_set SET_OPERATORS:o expr_set {: //System.out.println(""+v1+o+v2);
-//                                                             tmp_set_ = LogicSet.setOperation(set_def_.get(v1),o,set_def_.get(v2));
-//                                                                :}
+                  | expr_set:v1 SET_OPERATORS:o expr_set:v2 {: tmp_set_ = LogicSet.setOperation((v1),o,(v2));
+                                                             RESULT = tmp_set_;
+                                                                :}
                   ;
 set             ::= L_BRA set_content R_BRA           //{: System.out.println("set"); :}
                 ;
