@@ -86,6 +86,9 @@ SET_OPERATOR   =   "+"|"-"|"\\"
 SET_DELI        =   ","
 SEMI            =   ";"
 DEF             =   "DEF:"
+ARROW           =   "->"
+WIGGLY          =   "~"
+IF              =   "IF"
 
 %state STRING
 
@@ -113,10 +116,15 @@ DEF             =   "DEF:"
                                  }else{
                                      return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, capsName);
                                      }}
-<YYINITIAL> {SET_OPERATOR}     {return symbolFactory.newSymbol("SET_OPERATOR",sym.SET_OPERATOR, yytext());}
+<YYINITIAL> {SET_OPERATOR}      {return symbolFactory.newSymbol("SET_OPERATOR",sym.SET_OPERATOR, yytext());}
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
 <YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
 <YYINITIAL> {DEF}               {return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);}
+<YYINITIAL> {ARROW}             {return symbolFactory.newSymbol("ARROW",sym.ARROW);}
+<YYINITIAL> {WIGGLY}            {return symbolFactory.newSymbol("WIGGLY",sym.WIGGLY);}
+<YYINITIAL> {IF}                {return symbolFactory.newSymbol("IF",sym.IF);}
+
+
 
 [^]                             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
 //[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }

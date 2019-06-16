@@ -1,4 +1,4 @@
-package node.relation;
+package node;
 
 import node.common.BiContextNode;
 import node.common.BiNode;

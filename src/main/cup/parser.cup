@@ -6,13 +6,11 @@ import java.util.HashSet;
 import common.RelationRepository;
 import node.*;
 import node.common.*;
-import node.relation.ComparisonNode;
 
 parser code {:
     private HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
-    //private HashMap<String, Pair<List<String>,String>> ref_def_;      //nazwa relacji -> <Lista zmiennych, jej ciało>
     private HashMap<String, Set<Integer>> set_def_;
-    private HashMap<String, BiNode> ref_def_;
+    private HashMap<String, Computable> ref_def_;
 
     private Set<Integer> tmp_set_;
 
@@ -32,7 +30,7 @@ init with {:
     tmp_set_= new HashSet<Integer>();
 
     variables_ = new HashMap<String, Integer>();
-    ref_def_ = new HashMap<String, BiNode>();
+    ref_def_ = new HashMap<String, Computable>();
     set_def_ = new HashMap<String, Set<Integer>>();
     lexer = new TestLexer(symbolFactory,new InputStreamReader(System.in));
 :}
@@ -45,14 +43,15 @@ terminal        String          GT,LT,GT_EQ,LT_EQ,EQ,NOT_EQ;
 terminal        String          SET_OPERATOR;
 terminal        Integer         NUMBER;
 terminal        String          VAR,SET_VAR;
-terminal                        REL;
+terminal                        REL,ARROW,WIGGLY,IF;
 
 /* non terminals */
 non terminal    Integer         expr_var,expr_rel;
 non terminal                    rel_def,statment,expr_list,set;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
-non terminal    BiNode          relation_node,var_def;
+non terminal    Computable      relation_node;
+non terminal    BiNode          var_def;
 
 precedence left SET_OPERATOR,REL;
 
@@ -68,15 +67,13 @@ expr_list       ::= expr_list statment SEMI
                   | expr_var:e SEMI
                   | expr_list rel_def SEMI
                   | rel_def SEMI
-                  ;//rel_def |
+                  ;
 
 
-statment        ::= VAR:v1 IS expr_var:e1            {: //System.out.println("Statement "+v1+"="+e1);
-                                                        variables_.put(v1,e1); :}
-                  | SET_VAR:s1 IS expr_set:e             {: //System.out.println("statment set "+s1);
-                                                        set_def_.put(s1,new HashSet<Integer>(e));
+statment        ::= VAR:v1 IS expr_var:e1            {: variables_.put(v1,e1); :}
+                  | SET_VAR:s1 IS expr_set:e         {: set_def_.put(s1,new HashSet<Integer>(e));
                                                         tmp_set_.clear(); :}
-                  | expr_set:e                         {:System.out.println(""+e);
+                  | expr_set:e                       {:System.out.println(""+e);
                                                         tmp_set_.clear(); :}
                     ;
 
@@ -89,15 +86,11 @@ expr_var        ::= NUMBER:n1                        {: System.out.println(""+n1
                 ;
 
 
-expr_set        ::= SET_VAR:v                        {: //System.out.println(""+v+set_def_.get(v).toString());
-                                                        //tmp_set_=set_def_.get(v);
-                                                        RESULT = set_def_.get(v); :}
-                  | set                              {: //System.out.println(""+tmp_set_.toString());
-                                                        RESULT = tmp_set_;
-                                                         :}
-                  | expr_set:v1 SET_OPERATOR:o expr_set:v2 {: tmp_set_ = LogicSet.setOperation((v1),o,(v2));
-                                                             RESULT = tmp_set_;
-                                                                :}
+expr_set        ::= SET_VAR:v                        {: RESULT = set_def_.get(v); :}
+                  | set                              {: RESULT = tmp_set_;:}
+                  | expr_set:v1 SET_OPERATOR:o expr_set:v2
+                                                     {: tmp_set_ = LogicSet.setOperation((v1),o,(v2));
+                                                        RESULT = tmp_set_; :}
                   ;
 set             ::= L_BRA set_content R_BRA           //{: System.out.println("set"); :}
                 ;
@@ -108,46 +101,50 @@ set_content     ::= NUMBER:n1 SET_DELI set_content   {: tmp_set_.add(n1);
                                                         RESULT = n1; :}
                   ;
 rel_def         ::= REL_DEFINITION VAR:v1 SET_VAR:r VAR:v2 L_BRA relation_node:n R_BRA
-                 {: System.out.println("znaleziono def relacji");
-                    RelationRepository.addRelationName(r);
-                    HashMap<String,Integer> identifiers = new HashMap<>();
-                    identifiers.put(v1,0); identifiers.put(v2,1);
-                    BiNode.setIdentificatorsToLeafs(identifiers,n);
-                    ref_def_.put(r,n);
-                    :}
+                                                     {: System.out.println("znaleziono def relacji");
+                                                        RelationRepository.addRelationName(r);
+                                                        HashMap<String,Integer> identifiers = new HashMap<>();
+                                                        identifiers.put(v1,0); identifiers.put(v2,1);
+                                                        n.setIdentificatorsToLeafs(identifiers);
+                                                        ref_def_.put(r,n);
+                                                        :}
                 ;
 
-relation_node   ::= var_def:v1 LT var_def:v2          {: BiNode node = new ComparisonNode(NodeType.SMALLER);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  | var_def:v1 GT var_def:v2          {: BiNode node = new ComparisonNode(NodeType.GREATER);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  | var_def:v1 LT_EQ var_def:v2       {: BiNode node = new ComparisonNode(NodeType.SMALLER_OR_EQUAL);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  | var_def:v1 GT_EQ var_def:v2       {: BiNode node = new ComparisonNode(NodeType.GREATER_OR_EQUAL);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  | var_def:v1 EQ var_def:v2          {: BiNode node = new ComparisonNode(NodeType.EQUAL);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  | var_def:v1 NOT_EQ var_def:v2      {: BiNode node = new ComparisonNode(NodeType.NOT_EQUAL);
-                                                         node.setLeftNode(v1); node.setRightNode(v2);
-                                                         RESULT = node;:}
-                  |   var_def:v1                      {: RESULT = v1;:}
-                ;//DEF: a RRR b {a<b};
-var_def         ::= VAR:v                             {: BiNode node = new VarNode(v);
-                                                         RESULT = node;:}
-                  | NUMBER:n                          {: BiNode node = new NumberNode(n);
-                                                         RESULT = node;:}
+relation_node   ::= var_def:v1 LT var_def:v2         {: BiNode node = new ComparisonNode(NodeType.SMALLER);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1 GT var_def:v2         {: BiNode node = new ComparisonNode(NodeType.GREATER);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1 LT_EQ var_def:v2      {: BiNode node = new ComparisonNode(NodeType.SMALLER_OR_EQUAL);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1 GT_EQ var_def:v2      {: BiNode node = new ComparisonNode(NodeType.GREATER_OR_EQUAL);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1 EQ var_def:v2         {: BiNode node = new ComparisonNode(NodeType.EQUAL);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1 NOT_EQ var_def:v2     {: BiNode node = new ComparisonNode(NodeType.NOT_EQUAL);
+                                                        node.setLeftNode(v1); node.setRightNode(v2);
+                                                        RESULT = node;:}
+                  | var_def:v1                       {: RESULT = v1;:}
+                    ;//DEF: a RRR b {a<b};
+var_def         ::= VAR:v                            {: BiNode node = new VarNode(v);
+                                                        RESULT = node;:}
+                  | NUMBER:n                         {: BiNode node = new NumberNode(n);
+                                                        RESULT = node;:}
                   ;
 
-expr_rel        ::= expr_var:n1 REL:r expr_var:n2     {: BiContextNode ctx = new BiContextNode();
-                                                         ctx.ctx[0] = n1; ctx.ctx[1] = n2;
-                                                         BiNode node = ref_def_.get(r);
-                                                         Integer res = node.compute(ctx);
-                                                         RESULT = res;
-                                                         :}
+expr_rel        ::= expr_var:n1 REL:r expr_var:n2    {: BiContextNode ctx = new BiContextNode();
+                                                        ctx.ctx[0] = n1; ctx.ctx[1] = n2;
+                                                        Computable node = ref_def_.get(r);
+                                                        Integer res = node.compute(ctx);
+                                                        RESULT = res;
+                                                        :}
                 ;
 
+/*if_def          ::= expr_var:e1 ARROW L_BRA efredf R_BRA WIGGLY L_BRA efredf R_BRA
+                                                     {: :}
+                  | expr_var:e1 ARROW L_BRA efredf R_BRA
+                  ;*/
