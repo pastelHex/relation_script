@@ -43,20 +43,18 @@ scan with {: return lexer.next_token(); :}
 terminal                        L_BRA,R_BRA,IS,SET_DELI,SEMI,REL_DEFINITION;
 terminal        String          GT,LT,GT_EQ,LT_EQ,EQ,NOT_EQ;
 terminal        String          SET_OPERATOR;
-terminal        String          REL;
-terminal        List<Integer>   SET;
 terminal        Integer         NUMBER;
 terminal        String          VAR,SET_VAR;
+terminal                        REL;
 
 /* non terminals */
 non terminal    Integer         expr_var,expr_rel;
 non terminal                    rel_def,statment,expr_list,set;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
-non terminal    BiNode          relation_node;
-non terminal    BiNode          var_def;
+non terminal    BiNode          relation_node,var_def;
 
-precedence left SET_OPERATOR;
+precedence left SET_OPERATOR,REL;
 
 start with expr_list;
 
@@ -86,8 +84,11 @@ statment        ::= VAR:v1 IS expr_var:e1            {: //System.out.println("St
 expr_var        ::= NUMBER:n1                        {: System.out.println(""+n1); RESULT = n1; :}
                   | VAR:v1                           {: System.out.println(""+v1+"="+variables_.get(v1));
                                                         RESULT = variables_.get(v1); :}
-//                |   expr_rel:r                       {: System.out.println("expr\n"); :}
+                  | expr_rel:r                       {: System.out.println("relation usage copleted");
+                                                        RESULT = r; :}
                 ;
+
+
 expr_set        ::= SET_VAR:v                        {: //System.out.println(""+v+set_def_.get(v).toString());
                                                         //tmp_set_=set_def_.get(v);
                                                         RESULT = set_def_.get(v); :}
@@ -107,13 +108,13 @@ set_content     ::= NUMBER:n1 SET_DELI set_content   {: tmp_set_.add(n1);
                                                         RESULT = n1; :}
                   ;
 rel_def         ::= REL_DEFINITION VAR:v1 SET_VAR:r VAR:v2 L_BRA relation_node:n R_BRA
-                    {: System.out.println("znaleziono def relacji\n");
-                       RelationRepository.addRelationName(r);
-                       HashMap<String,Integer> identifiers = new HashMap<>();
-                       identifiers.put(v1,0); identifiers.put(v2,1);
-                       BiNode.setIdentificatorsToLeafs(identifiers,n);
-                        ref_def_.put(r,n);
-                       :}
+                 {: System.out.println("znaleziono def relacji");
+                    RelationRepository.addRelationName(r);
+                    HashMap<String,Integer> identifiers = new HashMap<>();
+                    identifiers.put(v1,0); identifiers.put(v2,1);
+                    BiNode.setIdentificatorsToLeafs(identifiers,n);
+                    ref_def_.put(r,n);
+                    :}
                 ;
 
 relation_node   ::= var_def:v1 LT var_def:v2          {: BiNode node = new ComparisonNode(NodeType.SMALLER);
@@ -136,14 +137,17 @@ relation_node   ::= var_def:v1 LT var_def:v2          {: BiNode node = new Compa
                                                          RESULT = node;:}
                   |   var_def:v1                      {: RESULT = v1;:}
                 ;//DEF: a RRR b {a<b};
-var_def         ::= VAR:v                             {: System.out.println("zmienna relacji");
-                                                         BiNode node = new VarNode(v);
-                                                          RESULT = node;:}
-                  | NUMBER:n                          {: System.out.println("zmienna relacji");
-                                                         BiNode node = new NumberNode(n);
-                                                          RESULT = node;:}
+var_def         ::= VAR:v                             {: BiNode node = new VarNode(v);
+                                                         RESULT = node;:}
+                  | NUMBER:n                          {: BiNode node = new NumberNode(n);
+                                                         RESULT = node;:}
                   ;
 
-//expr_rel        ::= NUMBER:n1 REL:r NUMBER:n2                       {: System.out.println("expr_rel\n"); :}
-//                ;
+expr_rel        ::= expr_var:n1 REL:r expr_var:n2     {: BiContextNode ctx = new BiContextNode();
+                                                         ctx.ctx[0] = n1; ctx.ctx[1] = n2;
+                                                         BiNode node = ref_def_.get(r);
+                                                         Integer res = node.compute(ctx);
+                                                         RESULT = res;
+                                                         :}
+                ;
 
