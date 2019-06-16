@@ -6,3 +6,9 @@ cp sym.java src/main/java/
 rm ./src/jflex/TestLexer.java
 rm ./parser.java
 rm ./sym.java
+
+# Ponieawż java-cup-11b.jar najwyraźniej nie występuje w repozytoriach Mavena,
+# należy przejść do katalogu, gdzie się ten plik znajduje i odpalić:
+# 
+# mvn install:install-file -Dfile=java-cup-11b.jar -DgroupId=de.jflex -DartifactId=cup -Dversion=11b -Dpackaging=jar
+
