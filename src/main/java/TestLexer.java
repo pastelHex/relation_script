@@ -41,10 +41,10 @@ public class TestLexer implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\11\0\1\12\1\11\1\0\1\12\1\10\22\0\1\12\12\0\1\14"+
-    "\1\15\1\14\2\0\1\2\11\13\1\22\1\16\1\7\1\0\1\6"+
-    "\2\0\3\3\1\17\1\20\1\21\24\3\1\0\1\14\4\0\10\1"+
-    "\1\23\11\1\1\24\7\1\1\4\1\0\1\5\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
+    "\11\0\1\14\1\13\1\0\1\14\1\12\22\0\1\14\1\11\11\0"+
+    "\1\16\1\17\1\16\2\0\1\2\11\15\1\24\1\20\1\7\1\10"+
+    "\1\6\2\0\3\3\1\21\1\22\1\23\24\3\1\0\1\16\4\0"+
+    "\10\1\1\25\11\1\1\26\7\1\1\4\1\0\1\5\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
 
   /** 
    * Translates characters to character classes
@@ -58,11 +58,11 @@ public class TestLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\2\10\1\11\1\12\1\13\1\14\1\3\1\2\1\3"+
-    "\1\15\1\3\1\16";
+    "\2\1\2\10\1\11\1\12\1\13\1\14\1\3\1\2"+
+    "\1\15\1\16\1\17\1\20\1\3\1\21\1\3\1\22";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[21];
+    int [] result = new int[27];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -87,12 +87,13 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\25\0\52\0\77\0\124\0\52\0\52\0\52"+
-    "\0\52\0\151\0\52\0\176\0\52\0\52\0\52\0\223"+
-    "\0\250\0\275\0\77\0\322\0\52";
+    "\0\0\0\27\0\56\0\105\0\134\0\56\0\56\0\163"+
+    "\0\212\0\241\0\270\0\317\0\56\0\346\0\56\0\56"+
+    "\0\56\0\375\0\u0114\0\56\0\56\0\56\0\56\0\u012b"+
+    "\0\105\0\u0142\0\56";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[21];
+    int [] result = new int[27];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -116,17 +117,18 @@ public class TestLexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\3\1\4\1\3\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\2\13\1\14\1\15\1\16\1\17\1\20\2\5"+
-    "\1\3\1\21\1\4\25\3\26\0\2\4\10\0\1\4"+
-    "\7\0\2\4\2\0\2\5\7\0\1\5\3\0\3\5"+
-    "\14\0\1\13\15\0\1\14\10\0\1\14\13\0\2\5"+
-    "\7\0\1\5\3\0\1\5\1\22\1\5\4\0\2\4"+
-    "\10\0\1\4\7\0\1\4\1\23\2\0\2\5\7\0"+
-    "\1\5\3\0\2\5\1\24\5\0\2\5\7\0\1\5"+
-    "\3\0\3\5\1\25\2\0";
+    "\1\12\1\13\1\14\2\15\1\16\1\17\1\20\1\21"+
+    "\1\22\2\5\1\3\1\23\1\4\27\3\30\0\2\4"+
+    "\12\0\1\4\7\0\2\4\2\0\2\5\11\0\1\5"+
+    "\3\0\3\5\13\0\1\24\26\0\1\25\26\0\1\26"+
+    "\26\0\1\27\31\0\1\15\15\0\1\16\12\0\1\16"+
+    "\13\0\2\5\11\0\1\5\3\0\1\5\1\30\1\5"+
+    "\4\0\2\4\12\0\1\4\7\0\1\4\1\31\2\0"+
+    "\2\5\11\0\1\5\3\0\2\5\1\32\5\0\2\5"+
+    "\11\0\1\5\3\0\3\5\1\33\2\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[231];
+    int [] result = new int[345];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -164,11 +166,11 @@ public class TestLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\1\11\2\1\4\11\1\1\1\11\1\1\3\11"+
-    "\5\1\1\11";
+    "\2\0\1\11\2\1\2\11\5\1\1\11\1\1\3\11"+
+    "\2\1\4\11\3\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[21];
+    int [] result = new int[27];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -297,7 +299,7 @@ public class TestLexer implements java_cup.runtime.Scanner {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 108) {
+    while (i < 110) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -666,15 +668,14 @@ public class TestLexer implements java_cup.runtime.Scanner {
             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored");
             } 
             // fall through
-          case 15: break;
+          case 19: break;
           case 2: 
-            { System.out.println("VAR"); return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
+            { return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());
             } 
             // fall through
-          case 16: break;
+          case 20: break;
           case 3: 
             { String capsName = yytext();
-                                    System.out.println("set VAR");
                                  if(RelationRepository.isThereRelation(capsName)){
                                      return symbolFactory.newSymbol("SET_VAR",sym.REL, yytext());
                                  }else{
@@ -682,62 +683,82 @@ public class TestLexer implements java_cup.runtime.Scanner {
                                      }
             } 
             // fall through
-          case 17: break;
+          case 21: break;
           case 4: 
             { return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);
             } 
             // fall through
-          case 18: break;
+          case 22: break;
           case 5: 
             { return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);
             } 
             // fall through
-          case 19: break;
+          case 23: break;
           case 6: 
             { return symbolFactory.newSymbol("GT",sym.GT);
             } 
             // fall through
-          case 20: break;
+          case 24: break;
           case 7: 
             { return symbolFactory.newSymbol("LT",sym.LT);
             } 
             // fall through
-          case 21: break;
+          case 25: break;
           case 8: 
             { /*ignore*/
             } 
             // fall through
-          case 22: break;
+          case 26: break;
           case 9: 
             { return symbolFactory.newSymbol("NUMBER",sym.NUMBER, Integer.parseInt(yytext()));
             } 
             // fall through
-          case 23: break;
+          case 27: break;
           case 10: 
-            { return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());
+            { return symbolFactory.newSymbol("SET_OPERATOR",sym.SET_OPERATOR, yytext());
             } 
             // fall through
-          case 24: break;
+          case 28: break;
           case 11: 
             { return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);
             } 
             // fall through
-          case 25: break;
+          case 29: break;
           case 12: 
             { return symbolFactory.newSymbol("SEMI",sym.SEMI);
             } 
             // fall through
-          case 26: break;
+          case 30: break;
           case 13: 
+            { return symbolFactory.newSymbol("GT_EQ",sym.GT_EQ);
+            } 
+            // fall through
+          case 31: break;
+          case 14: 
+            { return symbolFactory.newSymbol("LT_EQ",sym.LT_EQ);
+            } 
+            // fall through
+          case 32: break;
+          case 15: 
+            { return symbolFactory.newSymbol("EQ",sym.EQ);
+            } 
+            // fall through
+          case 33: break;
+          case 16: 
+            { return symbolFactory.newSymbol("NOT_EQ",sym.NOT_EQ);
+            } 
+            // fall through
+          case 34: break;
+          case 17: 
             { return symbolFactory.newSymbol("IS",sym.IS);
             } 
             // fall through
-          case 27: break;
-          case 14: 
-            { System.out.println("DEF");return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);
+          case 35: break;
+          case 18: 
+            { return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);
             } 
             // fall through
-          case 28: break;
+          case 36: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

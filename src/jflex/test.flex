@@ -76,13 +76,16 @@ BRACKET_L       =   "{"
 BRACKET_R       =   "}"
 GT              =   ">"
 LT              =   "<"
+GT_EQ           =   ">="
+LT_EQ           =   "<="
+EQ              =   "=="
+NOT_EQ          =   "!="
 WHITESPACE      =   \r|\n|\r\n | [ \t\f]
 NUMBER          =   [1-9][0-9]*
-SET_OPERATORS   =   "+"|"-"|"\\"
+SET_OPERATOR   =   "+"|"-"|"\\"
 SET_DELI        =   ","
 SEMI            =   ";"
 DEF             =   "DEF:"
-//SET_LIST        =   (","{WHITESPACE}*{VARIABLE})+
 
 %state STRING
 
@@ -94,8 +97,15 @@ DEF             =   "DEF:"
 <YYINITIAL> {WHITESPACE}        {/*ignore*/}
 <YYINITIAL> {BRACKET_L}         {return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);}
 <YYINITIAL> {BRACKET_R}         {return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);}
+
+ //VAR OPERATORS
 <YYINITIAL> {GT}                {return symbolFactory.newSymbol("GT",sym.GT);}
 <YYINITIAL> {LT}                {return symbolFactory.newSymbol("LT",sym.LT);}
+<YYINITIAL> {GT_EQ}             {return symbolFactory.newSymbol("GT_EQ",sym.GT_EQ);}
+<YYINITIAL> {LT_EQ}             {return symbolFactory.newSymbol("LT_EQ",sym.LT_EQ);}
+<YYINITIAL> {EQ}                {return symbolFactory.newSymbol("EQ",sym.EQ);}
+<YYINITIAL> {NOT_EQ}            {return symbolFactory.newSymbol("NOT_EQ",sym.NOT_EQ);}
+
 <YYINITIAL> {NUMBER}            {return symbolFactory.newSymbol("NUMBER",sym.NUMBER, Integer.parseInt(yytext()));}
 <YYINITIAL> {SET_VAR}           {String capsName = yytext();
                                  if(RelationRepository.isThereRelation(capsName)){
@@ -103,7 +113,7 @@ DEF             =   "DEF:"
                                  }else{
                                      return symbolFactory.newSymbol("SET_VAR",sym.SET_VAR, capsName);
                                      }}
-<YYINITIAL> {SET_OPERATORS}     {return symbolFactory.newSymbol("SET_OPERATORS",sym.SET_OPERATORS, yytext());}
+<YYINITIAL> {SET_OPERATOR}     {return symbolFactory.newSymbol("SET_OPERATOR",sym.SET_OPERATOR, yytext());}
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
 <YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
 <YYINITIAL> {DEF}               {return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);}
