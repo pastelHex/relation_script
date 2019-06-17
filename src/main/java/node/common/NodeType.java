@@ -1,6 +1,7 @@
 package node.common;
 
 public enum NodeType {
+    STATEMENT,
     TRINODE,
     VAR,
     NUMBER,

@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 public class TriNode implements Computable {
 
-    private BiNode conditionNode;
-    private BiNode trueNode;
-    private BiNode falseNode;
+    private Computable conditionNode;
+    private Computable trueNode;
+    private Computable falseNode;
 
-    public TriNode(BiNode ifNode, BiNode trueNode, BiNode falseNode) {
+    public TriNode(Computable ifNode, Computable trueNode, Computable falseNode) {
         this.conditionNode = ifNode;
         this.trueNode = trueNode;
         this.falseNode = falseNode;
@@ -35,9 +35,9 @@ public class TriNode implements Computable {
     public static void setIdentificatorsToLeafs(HashMap<String, Integer> identificators, TriNode node) {
         if (node == null)
             return;
-        BiNode.setIdentificatorsToLeafs(identificators, node.getConditionNode());
-        BiNode.setIdentificatorsToLeafs(identificators, node.getTrueNode());
-        BiNode.setIdentificatorsToLeafs(identificators, node.getFalseNode());
+        BiNode.setIdentificatorsToLeafs(identificators, (BiNode) node.getConditionNode());
+        BiNode.setIdentificatorsToLeafs(identificators, (BiNode) node.getTrueNode());
+        BiNode.setIdentificatorsToLeafs(identificators, (BiNode) node.getFalseNode());
     }
 
     public void setIdentificatorsToLeafs(HashMap<String, Integer> identificators) {
@@ -46,15 +46,15 @@ public class TriNode implements Computable {
         this.getFalseNode().setIdentificatorsToLeafs(identificators);
     }
 
-    public BiNode getConditionNode() {
+    public Computable getConditionNode() {
         return conditionNode;
     }
 
-    public BiNode getTrueNode() {
+    public Computable getTrueNode() {
         return trueNode;
     }
 
-    public BiNode getFalseNode() {
+    public Computable getFalseNode() {
         return falseNode;
     }
 }

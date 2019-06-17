@@ -17,11 +17,11 @@ public abstract class BiNode implements Computable {
         this.rightNode = rightNode;
     }
 
-    public Computable getLeftNode() {
+    public BiNode getLeftNode() {
         return leftNode;
     }
 
-    public Computable getRightNode() {
+    public BiNode getRightNode() {
         return rightNode;
     }
 

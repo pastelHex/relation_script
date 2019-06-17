@@ -8,14 +8,22 @@ import node.*;
 import node.common.*;
 
 parser code {:
-    private HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
-    private HashMap<String, Set<Integer>> set_def_;
-    private HashMap<String, Computable> ref_def_;
+    private static HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
+    private static HashMap<String, Set<Integer>> set_def_;
+    private static HashMap<String, Computable> ref_def_;
 
-    private Set<Integer> tmp_set_;
+    private static Set<Integer> tmp_set_;
 
     protected static TestLexer lexer;
     protected static ComplexSymbolFactory symbolFactory;
+
+    public static void setVariable(String name, Integer value){
+        variables_.put(name,value);
+    }
+
+    public static void setSet(String name, Set<Integer> set){
+        set_def_.put(name, set);
+    }
 
     public static void main(String args[]) throws Exception {
         //ComplexSymbolFactory f = new ComplexSymbolFactory();
@@ -23,7 +31,7 @@ parser code {:
         ComplexSymbolFactory f = new ComplexSymbolFactory();
         symbolFactory = f;
         new parser(lexer,symbolFactory).parse();
-        }
+    }
 :}
 
 init with {:
@@ -47,11 +55,12 @@ terminal                        REL,ARROW,WIGGLY,IF;
 
 /* non terminals */
 non terminal    Integer         expr_var,expr_rel;
-non terminal                    rel_def,statment,expr_list,set;
+non terminal                    rel_def,statment,expr_list,set,if;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
-non terminal    Computable      relation_node;
+non terminal    Computable      relation_node,statment_node;
 non terminal    BiNode          var_def;
+non terminal    Computable      if_def;
 
 precedence left SET_OPERATOR,REL;
 
@@ -129,7 +138,12 @@ relation_node   ::= var_def:v1 LT var_def:v2         {: BiNode node = new Compar
                                                         node.setLeftNode(v1); node.setRightNode(v2);
                                                         RESULT = node;:}
                   | var_def:v1                       {: RESULT = v1;:}
-                    ;//DEF: a RRR b {a<b};
+                  | if_def:n                         {: RESULT = n;:}
+                  ;//DEF: a RRR b {a<b};
+
+statment_node    ::= VAR:v1 IS expr_var:e1           {:  :}
+ //                 | SET_VAR:s1 IS expr_set:e         {:  :}
+                  ;
 var_def         ::= VAR:v                            {: BiNode node = new VarNode(v);
                                                         RESULT = node;:}
                   | NUMBER:n                         {: BiNode node = new NumberNode(n);
@@ -144,7 +158,16 @@ expr_rel        ::= expr_var:n1 REL:r expr_var:n2    {: BiContextNode ctx = new 
                                                         :}
                 ;
 
-/*if_def          ::= expr_var:e1 ARROW L_BRA efredf R_BRA WIGGLY L_BRA efredf R_BRA
+if_def          ::= relation_node:e1 ARROW L_BRA relation_node:n1 R_BRA WIGGLY L_BRA relation_node:n2 R_BRA
+                                                     {: TriNode triNode = new TriNode(e1, n1, n2);
+                                                        RESULT = triNode; :}
+//                  | relation_node:e1 ARROW L_BRA relation_node:n R_BRA
+//                                                     {: TriNode triNode = new TriNode(e1, n, null);:}
+                  ;
+/*
+if              ::= expr_var:e1 ARROW L_BRA statment R_BRA WIGGLY L_BRA statment R_BRA
+                                                     {: if(e1 == 0){//
+                                                        }:}
+                  | expr_var:e1 ARROW L_BRA statment R_BRA
                                                      {: :}
-                  | expr_var:e1 ARROW L_BRA efredf R_BRA
                   ;*/
