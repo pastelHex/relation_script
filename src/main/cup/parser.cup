@@ -167,6 +167,7 @@ expr_rel        ::= expr_var:n1 REL:r expr_var:n2    {: BiContextNode ctx = new 
                                                         :}
                 ;
 
+//CAN BE EVERYWHERE WHERE IS expr_var może być luzem - sprawdzić
 if_def          ::= IF relation_node:e1 ARROW L_BRA relation_node:n1 R_BRA WIGGLY L_BRA relation_node:n2 R_BRA
                                                      {: TriNode triNode = new TriNode(e1, n1, n2);
                                                         RESULT = triNode; :}
@@ -192,4 +193,5 @@ b is 4;
 c is a R b;
 IF 1 -> {a is 0}~{b is 0};
 IF a R b -> {a is 0}~{b is 0};
+DEF: a DDY b { IF a<b -> {a==1}~{b==0}};
 */
