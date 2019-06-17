@@ -1,4 +1,4 @@
-package node.common;
+package pastelhex.aug.node.common;
 
 public class BiContextNode {
     public Integer[] ctx;

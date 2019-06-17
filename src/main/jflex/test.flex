@@ -2,7 +2,11 @@
  * Text up to the first  is copied verbatim into the created source file.
  * Used for package and import statements. (we don't need any here)
  */
-import common.RelationRepository;import java_cup.runtime.Symbol;
+
+package pastelhex.aug;
+
+import pastelhex.aug.common.RelationRepository;
+import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 import java.lang.*;

@@ -1,4 +1,4 @@
-package common;
+package pastelhex.aug.common;
 
 import java.util.HashSet;
 import java.util.Set;

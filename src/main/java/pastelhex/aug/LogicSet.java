@@ -1,3 +1,5 @@
+package pastelhex.aug;
+
 import java.util.HashSet;
 
 public class LogicSet {

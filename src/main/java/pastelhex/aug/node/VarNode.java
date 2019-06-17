@@ -1,8 +1,8 @@
-package node;
+package pastelhex.aug.node;
 
-import node.common.BiContextNode;
-import node.common.BiNode;
-import node.common.NodeType;
+import pastelhex.aug.node.common.BiContextNode;
+import pastelhex.aug.node.common.BiNode;
+import pastelhex.aug.node.common.NodeType;
 
 public class VarNode extends BiNode {
 

@@ -1,4 +1,4 @@
-package node.common;
+package pastelhex.aug.node.common;
 
 import java.util.HashMap;
 

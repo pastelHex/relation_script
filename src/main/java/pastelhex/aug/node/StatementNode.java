@@ -1,16 +1,16 @@
-package node;
+package pastelhex.aug.node;
 
-//import parser;
-import node.common.BiContextNode;
-import node.common.BiNode;
-import node.common.NodeType;
+import pastelhex.aug.node.common.BiContextNode;
+import pastelhex.aug.node.common.BiNode;
+import pastelhex.aug.node.common.NodeType;
+import pastelhex.aug.parser;
 
 public class StatementNode extends BiNode {
     @Override
     public Integer compute(BiContextNode ctx) {
         String var = getLeftNode().varName;
         Integer value = getRightNode().compute(ctx);
-        //parser.setVariable
+        parser.setVariable("a",3);
         //parser.setVariable
         return 1;
     }
