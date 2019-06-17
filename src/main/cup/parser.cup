@@ -61,7 +61,7 @@ non terminal                    rel_def,statment,expr_list,set,if;
 non terminal    Integer         set_content;
 non terminal    Set<Integer>    expr_set;
 non terminal    Computable      relation_node,statment_node;
-non terminal    BiNode          var_def;
+non terminal    BiNode          var_def,only_var_def;
 non terminal    Computable      if_def;
 
 precedence left SET_OPERATOR,REL;
@@ -78,6 +78,8 @@ expr_list       ::= expr_list statment SEMI
                   | expr_var:e SEMI
                   | expr_list rel_def SEMI
                   | rel_def SEMI
+                  | expr_list if SEMI
+                  | if SEMI
                   ;
 
 
@@ -143,8 +145,13 @@ relation_node   ::= var_def:v1 LT var_def:v2         {: BiNode node = new Compar
                   | if_def:n                         {: RESULT = n;:}
                   ;//DEF: a RRR b {a<b};
 
-statment_node    ::= VAR:v1 IS expr_var:e1           {:  :}
+statment_node   ::= only_var_def:v1 IS var_def:n1    {: BiNode node =  new StatementNode(v1,n1);
+                                                        RESULT = node;:}
  //                 | SET_VAR:s1 IS expr_set:e         {:  :}
+                  ;
+
+only_var_def    ::= VAR:v                           {: BiNode node = new VarNode(v);
+                                                        RESULT = node;:}
                   ;
 var_def         ::= VAR:v                            {: BiNode node = new VarNode(v);
                                                         RESULT = node;:}
@@ -160,16 +167,29 @@ expr_rel        ::= expr_var:n1 REL:r expr_var:n2    {: BiContextNode ctx = new 
                                                         :}
                 ;
 
-if_def          ::= relation_node:e1 ARROW L_BRA relation_node:n1 R_BRA WIGGLY L_BRA relation_node:n2 R_BRA
+if_def          ::= IF relation_node:e1 ARROW L_BRA relation_node:n1 R_BRA WIGGLY L_BRA relation_node:n2 R_BRA
                                                      {: TriNode triNode = new TriNode(e1, n1, n2);
                                                         RESULT = triNode; :}
 //                  | relation_node:e1 ARROW L_BRA relation_node:n R_BRA
 //                                                     {: TriNode triNode = new TriNode(e1, n, null);:}
                   ;
-/*
-if              ::= expr_var:e1 ARROW L_BRA statment R_BRA WIGGLY L_BRA statment R_BRA
-                                                     {: if(e1 == 0){//
+
+if              ::= IF expr_var:e1 ARROW L_BRA statment_node:n1 R_BRA WIGGLY L_BRA statment_node:n2 R_BRA
+                                                     {: if(e1 == 0){//fałsz
+                                                            n2.compute(null);
+                                                        }else{
+                                                            n1.compute(null);
                                                         }:}
-                  | expr_var:e1 ARROW L_BRA statment R_BRA
-                                                     {: :}
-                  ;*/
+                  | IF expr_var:e1 ARROW L_BRA statment_node:n R_BRA
+                                                     {: if(e1 != 0){
+                                                            n.compute(null);
+                                                        } :}
+                  ;
+/*
+DEF: a R b { a < b };
+a is 1;
+b is 4;
+c is a R b;
+IF 1 -> {a is 0}~{b is 0};
+IF a R b -> {a is 0}~{b is 0};
+*/

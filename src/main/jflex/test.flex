@@ -76,6 +76,7 @@ import java.lang.*;
 VARIABLE        =   [a-z]+([a-z]|[0-9])*
 //RELATION        =   [A-Z]+([A-Z]|[0-9])*
 SET_VAR         =   [A-Z]+([A-Z]|[0-9])*
+ARROW           =   "->"
 BRACKET_L       =   "{"
 BRACKET_R       =   "}"
 GT              =   ">"
@@ -85,12 +86,11 @@ LT_EQ           =   "<="
 EQ              =   "=="
 NOT_EQ          =   "!="
 WHITESPACE      =   \r|\n|\r\n | [ \t\f]
-NUMBER          =   [1-9][0-9]*
+NUMBER          =   [0-9]+
 SET_OPERATOR   =   "+"|"-"|"\\"
 SET_DELI        =   ","
 SEMI            =   ";"
 DEF             =   "DEF:"
-ARROW           =   "->"
 WIGGLY          =   "~"
 IF              =   "IF"
 
@@ -104,6 +104,8 @@ IF              =   "IF"
 <YYINITIAL> {WHITESPACE}        {/*ignore*/}
 <YYINITIAL> {BRACKET_L}         {return symbolFactory.newSymbol("BRACKET_L",sym.L_BRA);}
 <YYINITIAL> {BRACKET_R}         {return symbolFactory.newSymbol("BRACKET_R",sym.R_BRA);}
+<YYINITIAL> {IF}                {return symbolFactory.newSymbol("IF",sym.IF);}
+<YYINITIAL> {ARROW}             {return symbolFactory.newSymbol("ARROW",sym.ARROW);}
 
  //VAR OPERATORS
 <YYINITIAL> {GT}                {return symbolFactory.newSymbol("GT",sym.GT);}
@@ -124,9 +126,7 @@ IF              =   "IF"
 <YYINITIAL> {SET_DELI}          {return symbolFactory.newSymbol("SET_DELI",sym.SET_DELI);}
 <YYINITIAL> {SEMI}              {return symbolFactory.newSymbol("SEMI",sym.SEMI);}
 <YYINITIAL> {DEF}               {return symbolFactory.newSymbol("DEF",sym.REL_DEFINITION);}
-<YYINITIAL> {ARROW}             {return symbolFactory.newSymbol("ARROW",sym.ARROW);}
 <YYINITIAL> {WIGGLY}            {return symbolFactory.newSymbol("WIGGLY",sym.WIGGLY);}
-<YYINITIAL> {IF}                {return symbolFactory.newSymbol("IF",sym.IF);}
 
 
 
