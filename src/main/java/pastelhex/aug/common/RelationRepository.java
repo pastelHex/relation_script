@@ -8,7 +8,6 @@ public class RelationRepository {
     private static Set<String> allRelationsNames = new HashSet<>();
 
     public static void addRelationName(String name) {
-        System.out.println("Adding relation " + name);
         allRelationsNames.add(name);
     }
 

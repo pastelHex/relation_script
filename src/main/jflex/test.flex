@@ -24,7 +24,7 @@ import java.lang.*;
 %char
 %line
 %column
-//%implements sym
+
 %public
 /* what return yylex() method */
 
@@ -59,15 +59,6 @@ import java.lang.*;
 						new Location(yyline+1,yycolumn+yylength(), yychar+yylength()), lexem);
     }
 
-    protected void emit_warning(String message){
-    	System.out.println("scanner warning: " + message + " at : 2 "+
-    			(yyline+1) + " " + (yycolumn+1) + " " + yychar);
-    }
-
-    protected void emit_error(String message){
-    	System.out.println("scanner error: " + message + " at : 2" +
-    			(yyline+1) + " " + (yycolumn+1) + " " + yychar);
-    }
 %}
 
 /* Here we define some macros, which are abbriviations for regular expressions.
@@ -98,7 +89,7 @@ IF              =   "IF"
 
 %%
 
-<YYINITIAL> "is"                { return symbolFactory.newSymbol("IS",sym.IS);}
+<YYINITIAL> "is"                {return symbolFactory.newSymbol("IS",sym.IS);}
 <YYINITIAL> {VARIABLE}          {return symbolFactory.newSymbol("VARIABLE",sym.VAR, yytext());}
 //<YYINITIAL> {RELATION}          { return symbolFactory.newSymbol("RELATION",sym.REL, yytext());}
 <YYINITIAL> {WHITESPACE}        {/*ignore*/}
@@ -129,9 +120,7 @@ IF              =   "IF"
 <YYINITIAL> {WIGGLY}            {return symbolFactory.newSymbol("WIGGLY",sym.WIGGLY);}
 
 
-
-[^]                             { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
-//[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }
+[^]                             { throw new RuntimeException("Illegal character <" + yytext() + ">"); }
 
 /*  var1*RELATION*var2{ var1 > var2}       rel_def
     a is 5RELATION6;                        STATEMENT

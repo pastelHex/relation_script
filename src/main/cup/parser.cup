@@ -10,11 +10,11 @@ import pastelhex.aug.node.*;
 import pastelhex.aug.node.common.*;
 
 parser code {:
-    private static HashMap<String, Integer> variables_;                      //nazwa zmiennej -> jej wartość
-    private static HashMap<String, Set<Integer>> set_def_;
-    private static HashMap<String, Computable> ref_def_;
+    private static HashMap<String, Integer> variables_;      //nazwa zmiennej -> jej wartość
+    private static HashMap<String, Set<Integer>> set_def_;   //nazwa zbioru -> zbiór
+    private static HashMap<String, Computable> ref_def_;     //nazwa relacji -> node który ją przedstawia
 
-    private static Set<Integer> tmp_set_;
+    private static Set<Integer> tmp_set_;                    //pomocniczy zbór do tworzenia zbirów
 
     protected static TestLexer lexer;
     protected static ComplexSymbolFactory symbolFactory;
@@ -28,8 +28,6 @@ parser code {:
     }
 
     public static void main(String args[]) throws Exception {
-        //ComplexSymbolFactory f = new ComplexSymbolFactory();
-        //lexer = new TestLexer(f,new InputStreamReader(System.in));
         ComplexSymbolFactory f = new ComplexSymbolFactory();
         symbolFactory = f;
         new parser(lexer,symbolFactory).parse();
@@ -64,7 +62,7 @@ non terminal    Computable      relation_node,statment_node;
 non terminal    BiNode          var_def,only_var_def;
 non terminal    Computable      if_def;
 
-precedence left SET_OPERATOR,REL;
+precedence left SET_OPERATOR,REL,ARROW;
 
 start with expr_list;
 
@@ -86,16 +84,16 @@ expr_list       ::= expr_list statment SEMI
 statment        ::= VAR:v1 IS expr_var:e1            {: variables_.put(v1,e1); :}
                   | SET_VAR:s1 IS expr_set:e         {: set_def_.put(s1,new HashSet<Integer>(e));
                                                         tmp_set_.clear(); :}
-                  | expr_set:e                       {:System.out.println(""+e);
+                  | expr_set:e                       {:System.out.println(e);
                                                         tmp_set_.clear(); :}
                     ;
 
 
-expr_var        ::= NUMBER:n1                        {: System.out.println(""+n1); RESULT = n1; :}
+expr_var        ::= NUMBER:n1                        {: RESULT = n1; :}
                   | VAR:v1                           {: System.out.println(""+v1+"="+variables_.get(v1));
                                                         RESULT = variables_.get(v1); :}
-                  | expr_rel:r                       {: System.out.println("relation usage copleted");
-                                                        RESULT = r; :}
+                  | expr_rel:r                       {: RESULT = r; :}
+                //  | if_def:v                         {: RESULT = v.compute(null); :}
                 ;
 
 
@@ -114,8 +112,7 @@ set_content     ::= NUMBER:n1 SET_DELI set_content   {: tmp_set_.add(n1);
                                                         RESULT = n1; :}
                   ;
 rel_def         ::= REL_DEFINITION VAR:v1 SET_VAR:r VAR:v2 L_BRA relation_node:n R_BRA
-                                                     {: System.out.println("znaleziono def relacji");
-                                                        RelationRepository.addRelationName(r);
+                                                     {: RelationRepository.addRelationName(r);
                                                         HashMap<String,Integer> identifiers = new HashMap<>();
                                                         identifiers.put(v1,0); identifiers.put(v2,1);
                                                         n.setIdentificatorsToLeafs(identifiers);
@@ -143,7 +140,7 @@ relation_node   ::= var_def:v1 LT var_def:v2         {: BiNode node = new Compar
                                                         RESULT = node;:}
                   | var_def:v1                       {: RESULT = v1;:}
                   | if_def:n                         {: RESULT = n;:}
-                  ;//DEF: a RRR b {a<b};
+                  ;
 
 statment_node   ::= only_var_def:v1 IS var_def:n1    {: BiNode node =  new StatementNode(v1,n1);
                                                         RESULT = node;:}
@@ -167,7 +164,7 @@ expr_rel        ::= expr_var:n1 REL:r expr_var:n2    {: BiContextNode ctx = new 
                                                         :}
                 ;
 
-//CAN BE EVERYWHERE WHERE IS expr_var może być luzem - sprawdzić
+//CAN BE EVERYWHERE WHERE IS var_def?  - nope
 if_def          ::= IF relation_node:e1 ARROW L_BRA relation_node:n1 R_BRA WIGGLY L_BRA relation_node:n2 R_BRA
                                                      {: TriNode triNode = new TriNode(e1, n1, n2);
                                                         RESULT = triNode; :}
@@ -193,5 +190,9 @@ b is 4;
 c is a R b;
 IF 1 -> {a is 0}~{b is 0};
 IF a R b -> {a is 0}~{b is 0};
-DEF: a DDY b { IF a<b -> {a==1}~{b==0}};
+DEF: a DD b { IF a<b -> {a==1}~{b==0}};
+A is {2,3};
+B is {4};
+C is A + {1};
+D is A+B;
 */
